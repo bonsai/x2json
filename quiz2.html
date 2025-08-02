@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス クイズ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #39FF14;
+            --dark-background: #1a1a1a;
+            --text-color: #00FF00; /* Neon green for text */
+            --border-glow: #00FF00;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--dark-background);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent scrollbar from glow effects */
+        }
+
+        .container {
+            background-color: #000;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green), 0 0 25px var(--neon-green) inset;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px; /* Mobile friendly size */
+            text-align: center;
+            position: relative;
+            animation: glow-border 1.5s infinite alternate;
+        }
+
+        @keyframes glow-border {
+            from {
+                box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green) inset;
+            }
+            to {
+                box-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green) inset;
+            }
+        }
+
+        h1 {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+
+        #file-select-container {
+            margin-bottom: 20px;
+        }
+
+        #file-select {
+            background-color: #333;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            cursor: pointer;
+            box-shadow: 0 0 5px var(--neon-green);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: calc(100% - 20px);
+            text-align-last: center;
+        }
+
+        #file-select:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* 固定サイズの要素 */
+        #question-area {
+            min-height: 100px; /* 問題文の最小高さ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            word-break: break-all;
+            padding: 5px; /* 内側の余白 */
+        }
+        #question-area p {
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin: 0;
+            text-align: left;
+            white-space: pre-wrap;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+        
+        /* タイピングアニメーションのカーソル */
+        #question-text.typing::after {
+            content: '|';
+            display: inline-block;
+            animation: blink-caret .75s step-end infinite;
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--neon-green); }
+        }
+
+
+        #options-container {
+            height: 250px; /* 選択肢ボタンの固定高さ */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        #options-container button {
+            background-color: #333;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            padding: 12px 15px;
+            margin: 5px 0;
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+            text-shadow: 0 0 5px var(--neon-green);
+            box-shadow: 0 0 5px var(--neon-green);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #options-container button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--neon-green);
+            border-radius: 50%;
+            transition: width 0.4s ease-out, height 0.4s ease-out, top 0.4s ease-out, left 0.4s ease-out;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        #options-container button:hover::before {
+            width: 300%;
+            height: 300%;
+            opacity: 0.6;
+        }
+        #options-container button:hover {
+            color: var(--dark-background);
+            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+            text-shadow: none;
+            transform: translateY(-2px);
+        }
+        #options-container button span {
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+        
+        /* 正解・不正解のボタン色 */
+        #options-container button.correct-selected {
+            background-color: var(--neon-green);
+            color: var(--dark-background);
+            box-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green) inset;
+        }
+        #options-container button.incorrect-selected {
+            background-color: #8B0000;
+            color: white;
+            box-shadow: 0 0 15px #FF4500;
+        }
+
+        /* マークのスタイル */
+        #options-container button .mark {
+            font-family: 'Material Icons';
+            font-size: 1.5em;
+            margin-left: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        #options-container button .mark.check {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+        #options-container button .mark.x-mark {
+            color: #FF4500;
+            text-shadow: 0 0 8px #FF4500;
+        }
+
+        #result-area {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            font-size: 1em;
+            color: var(--text-color);
+        }
+
+        .correct-text {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        .incorrect-text {
+            color: #FF4500;
+            text-shadow: 0 0 5px #FF4500;
+        }
+
+        #next-button, #restart-button, #start-quiz-button {
+            background-color: var(--neon-green);
+            color: var(--dark-background);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        #next-button:hover, #restart-button:hover, #start-quiz-button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        #next-button:active, #restart-button:active, #start-quiz-button:active {
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* SVG for a cool background pattern (optional) */
+        .svg-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg class="svg-background" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="var(--neon-green)" stroke-width="0.1"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+
+        <h1>サービス クイズ</h1>
+        
+        <div id="file-select-container">
+            <label for="file-select" style="display: block; margin-bottom: 10px;">クイズファイルを選択:</label>
+            <select id="file-select">
+                </select>
+            <button id="start-quiz-button" style="margin-top: 15px;">クイズ開始</button>
+        </div>
+
+        <div id="quiz-area" class="hidden">
+            <div id="question-area">
+                <p id="question-text"></p>
+            </div>
+            <div id="options-container">
+                </div>
+            <div id="result-area"></div>
+            <button id="next-button" class="hidden">次の問題</button>
+            <button id="restart-button" class="hidden">別のクイズを始める</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questions = [];
+        let serviceData = []; 
+        let typingInterval;
+
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const resultArea = document.getElementById('result-area');
+        const nextButton = document.getElementById('next-button');
+        const restartButton = document.getElementById('restart-button');
+        const fileSelect = document.getElementById('file-select');
+        const startQuizButton = document.getElementById('start-quiz-button');
+        const quizArea = document.getElementById('quiz-area');
+        const fileSelectContainer = document.getElementById('file-select-container');
+
+        // クイズファイルの定義（ユーザーが提供した例とGitHubのRaw URLを考慮）
+        // ご自身のGitHubリポジトリのRaw URLに置き換えてください
+        const quizFiles = [
+            { name: 'GCPサービス', url: 'https://raw.githubusercontent.com/bonsai/x2json/main/gcp.json' },
+            { name: 'AWSサービス', url: 'https://raw.githubusercontent.com/bonsai/x2json/main/aws.json' },
+            { name: 'さかなクイズ', url: 'https://raw.githubusercontent.com/bonsai/x2json/main/sakana.json' },
+            // 必要に応じて他のクイズファイルを追加
+            // { name: '新しいクイズ', url: 'https://raw.githubusercontent.com/your-username/your-repo/main/new_quiz.json' },
+        ];
+
+        // ファイル選択のドロップダウンを動的に生成
+        function populateFileSelect() {
+            fileSelect.innerHTML = ''; // 既存のオプションをクリア
+            quizFiles.forEach(file => {
+                const option = document.createElement('option');
+                option.value = file.url; // URLをvalueに設定
+                option.textContent = file.name;
+                fileSelect.appendChild(option);
+            });
+        }
+
+        // ファイル選択とクイズ開始ボタンのイベントリスナー
+        startQuizButton.addEventListener('click', async () => {
+            const selectedFileUrl = fileSelect.value;
+            await loadQuizData(selectedFileUrl);
+            if (serviceData.length >= 4) { 
+                fileSelectContainer.classList.add('hidden');
+                quizArea.classList.remove('hidden');
+                initializeQuiz();
+            } else {
+                alert('選択されたクイズデータの読み込みに失敗したか、クイズを生成するためのデータが不足しています（最低4つのデータが必要です）。');
+            }
+        });
+
+        async function loadQuizData(fileUrl) {
+            try {
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                serviceData = await response.json();
+                console.log(`${fileUrl} を読み込みました:`, serviceData);
+            } catch (error) {
+                console.error(`Error loading ${fileUrl}:`, error);
+                serviceData = []; 
+            }
+        }
+
+        function initializeQuiz() {
+            questions = shuffleArray([...serviceData]).map(item => {
+                const correctService = item.service;
+                // description_ja または info プロパティを優先して取得
+                const description = item.description_ja || item.info; 
+
+                if (!description || !correctService) { // descriptionまたはserviceがない場合は問題として扱わない
+                    return null;
+                }
+
+                // 正解以外のサービスから3つ選ぶ
+                const wrongOptionsPool = serviceData.filter(s => 
+                    s.service !== correctService && (s.description_ja || s.info)
+                );
+                const shuffledWrongOptions = shuffleArray([...wrongOptionsPool]);
+                
+                let options = [];
+                options.push(correctService);
+
+                for (let i = 0; i < 3 && i < shuffledWrongOptions.length; i++) {
+                    // 重複を避けるため、optionsに既に含まれていないかチェック
+                    if (!options.includes(shuffledWrongOptions[i].service)) {
+                        options.push(shuffledWrongOptions[i].service);
+                    }
+                }
+
+                // もし選択肢が4つ未満なら、適当なダミーを追加するか、問題をスキップする
+                // ここでは問題をスキップするロジックを優先します（問題数が減る）
+                if (options.length < 4) {
+                    return null; 
+                }
+                
+                return {
+                    question: `${description}。この説明に合致するサービスは何でしょう？`,
+                    correctAnswer: correctService,
+                    options: shuffleArray(options)
+                };
+            }).filter(q => q !== null && q.options.length === 4); // nullと4択以外は除外
+
+            currentQuestionIndex = 0;
+            score = 0;
+            if (questions.length === 0) {
+                questionTextElement.textContent = "クイズを作成できませんでした。データの形式を確認するか、十分な数のデータ（最低4つ）があるか確認してください。";
+                optionsContainer.innerHTML = '';
+                nextButton.classList.add('hidden');
+                restartButton.classList.remove('hidden');
+                restartButton.textContent = '別のクイズを始める';
+                return;
+            }
+            displayQuestion();
+            nextButton.classList.add('hidden');
+            restartButton.classList.add('hidden');
+            resultArea.textContent = '';
+        }
+
+        function displayQuestion() {
+            const questionData = questions[currentQuestionIndex];
+            if (!questionData) {
+                showResults();
+                return;
+            }
+
+            questionTextElement.textContent = ''; 
+            optionsContainer.innerHTML = ''; 
+            resultArea.textContent = ''; 
+            nextButton.classList.add('hidden'); 
+
+            typeWriter(questionData.question, () => {
+                questionData.options.forEach(option => {
+                    const button = document.createElement('button');
+                    const span = document.createElement('span'); 
+                    span.textContent = option;
+                    button.appendChild(span);
+                    button.onclick = () => checkAnswer(button, option, questionData.correctAnswer); 
+                    optionsContainer.appendChild(button);
+                });
+            });
+        }
+
+        function typeWriter(text, callback) {
+            let i = 0;
+            questionTextElement.classList.add('typing'); 
+            typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    questionTextElement.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    questionTextElement.classList.remove('typing'); 
+                    if (callback) callback();
+                }
+            }, 50); 
+        }
+
+        function checkAnswer(selectedButton, selectedOption, correctAnswer) {
+            clearInterval(typingInterval); 
+            questionTextElement.classList.remove('typing'); 
+
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.disabled = true; 
+                const buttonText = button.querySelector('span').textContent;
+                
+                if (buttonText === correctAnswer) {
+                    // 正解のボタンには常にチェックマーク
+                    button.classList.add('correct-selected'); // 選択の有無に関わらず正解色に
+                    const mark = document.createElement('span');
+                    mark.classList.add('mark', 'check');
+                    mark.textContent = 'check_circle';
+                    button.appendChild(mark);
+                } else if (button === selectedButton && selectedOption !== correctAnswer) {
+                    // 選択された不正解のボタンにはXマーク
+                    button.classList.add('incorrect-selected');
+                    const mark = document.createElement('span');
+                    mark.classList.add('mark', 'x-mark');
+                    mark.textContent = 'cancel';
+                    button.appendChild(mark);
+                }
+            });
+
+            if (selectedOption === correctAnswer) {
+                resultArea.textContent = '正解！';
+                resultArea.classList.add('correct-text');
+                resultArea.classList.remove('incorrect-text');
+                score++;
+            } else {
+                resultArea.textContent = `不正解...`; 
+                resultArea.classList.add('incorrect-text');
+                resultArea.classList.remove('correct-text');
+            }
+            nextButton.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            questionTextElement.textContent = `クイズ終了！あなたのスコアは ${score} / ${questions.length} です！`;
+            optionsContainer.innerHTML = '';
+            resultArea.textContent = '';
+            nextButton.classList.add('hidden');
+            restartButton.classList.remove('hidden');
+            restartButton.textContent = '別のクイズを始める';
+            restartButton.onclick = () => {
+                fileSelectContainer.classList.remove('hidden');
+                quizArea.classList.add('hidden');
+                restartButton.classList.add('hidden');
+                resultArea.textContent = '';
+                questionTextElement.textContent = '';
+                populateFileSelect(); // ファイル選択ドロップダウンを再生成
+            };
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // イベントリスナーの設定
+        nextButton.addEventListener('click', nextQuestion);
+
+        // 初期表示時にクイズエリアを非表示にし、ファイル選択を生成
+        document.addEventListener('DOMContentLoaded', () => {
+            quizArea.classList.add('hidden');
+            populateFileSelect(); // ページ読み込み時にドロップダウンを生成
+        });
+    </script>
+</body>
+</html>

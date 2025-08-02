@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス クイズ (Debug)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #39FF14;
+            --dark-background: #1a1a1a;
+            --text-color: #00FF00; /* Neon green for text */
+            --border-glow: #00FF00;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--dark-background);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column; /* Changed to column for debug info at top */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent scrollbar from glow effects */
+        }
+
+        .container {
+            background-color: #000;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green), 0 0 25px var(--neon-green) inset;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px; /* Mobile friendly size */
+            text-align: center;
+            position: relative;
+            animation: glow-border 1.5s infinite alternate;
+        }
+
+        @keyframes glow-border {
+            from {
+                box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green) inset;
+            }
+            to {
+                box-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green) inset;
+            }
+        }
+
+        h1 {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+
+        #file-select-container {
+            margin-bottom: 20px;
+        }
+
+        #file-select {
+            background-color: #333;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            cursor: pointer;
+            box-shadow: 0 0 5px var(--neon-green);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: calc(100% - 20px);
+            text-align-last: center;
+        }
+
+        #file-select:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* 固定サイズの要素 */
+        #question-area {
+            min-height: 100px; /* 問題文の最小高さ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            word-break: break-all;
+            padding: 5px; /* 内側の余白 */
+        }
+        #question-area p {
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin: 0;
+            text-align: left;
+            white-space: pre-wrap;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+        
+        /* タイピングアニメーションのカーソル */
+        #question-text.typing::after {
+            content: '|';
+            display: inline-block;
+            animation: blink-caret .75s step-end infinite;
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--neon-green); }
+        }
+
+
+        #options-container {
+            height: 250px; /* 選択肢ボタンの固定高さ */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        #options-container button {
+            background-color: #333;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            border-radius: 5px;
+            padding: 12px 15px;
+            margin: 5px 0;
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+            text-shadow: 0 0 5px var(--neon-green);
+            box-shadow: 0 0 5px var(--neon-green);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #options-container button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--neon-green);
+            border-radius: 50%;
+            transition: width 0.4s ease-out, height 0.4s ease-out, top 0.4s ease-out, left 0.4s ease-out;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        #options-container button:hover::before {
+            width: 300%;
+            height: 300%;
+            opacity: 0.6;
+        }
+        #options-container button:hover {
+            color: var(--dark-background);
+            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+            text-shadow: none;
+            transform: translateY(-2px);
+        }
+        #options-container button span {
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+        
+        /* 正解・不正解のボタン色 */
+        #options-container button.correct-selected {
+            background-color: var(--neon-green);
+            color: var(--dark-background);
+            box-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green) inset;
+        }
+        #options-container button.incorrect-selected {
+            background-color: #8B0000;
+            color: white;
+            box-shadow: 0 0 15px #FF4500;
+        }
+
+        /* マークのスタイル */
+        #options-container button .mark {
+            font-family: 'Material Icons';
+            font-size: 1.5em;
+            margin-left: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        #options-container button .mark.check {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+        #options-container button .mark.x-mark {
+            color: #FF4500;
+            text-shadow: 0 0 8px #FF4500;
+        }
+
+        #result-area {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            font-size: 1em;
+            color: var(--text-color);
+        }
+
+        .correct-text {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        .incorrect-text {
+            color: #FF4500;
+            text-shadow: 0 0 5px #FF4500;
+        }
+
+        #next-button, #restart-button, #start-quiz-button {
+            background-color: var(--neon-green);
+            color: var(--dark-background);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        #next-button:hover, #restart-button:hover, #start-quiz-button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        #next-button:active, #restart-button:active, #start-quiz-button:active {
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* SVG for a cool background pattern (optional) */
+        .svg-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        /* デバッグ情報表示エリア */
+        #debug-info {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(57, 255, 20, 0.5);
+            color: rgba(57, 255, 20, 0.8);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 0.7em;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            white-space: pre-wrap; /* Preserve whitespace and allow wrapping */
+        }
+    </style>
+</head>
+<body>
+    <div id="debug-info">
+        <h3>[DEBUG INFO]</h3>
+        <p>問題: <span id="debug-current-question">N/A</span> / <span id="debug-total-questions">N/A</span></p>
+        <p>スコア: <span id="debug-score">N/A</span></p>
+        <p>読み込み中: <span id="debug-loading-status">待機中...</span></p>
+        <p>選択クイズURL: <span id="debug-selected-quiz-url">N/A</span></p>
+    </div>
+
+    <div class="container">
+        <svg class="svg-background" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="var(--neon-green)" stroke-width="0.1"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+
+        <h1>サービス クイズ</h1>
+        
+        <div id="file-select-container">
+            <label for="file-select" style="display: block; margin-bottom: 10px;">クイズファイルを選択:</label>
+            <select id="file-select">
+                </select>
+            <button id="start-quiz-button" style="margin-top: 15px;">クイズ開始</button>
+        </div>
+
+        <div id="quiz-area" class="hidden">
+            <div id="question-area">
+                <p id="question-text"></p>
+            </div>
+            <div id="options-container">
+                </div>
+            <div id="result-area"></div>
+            <button id="next-button" class="hidden">次の問題</button>
+            <button id="restart-button" class="hidden">別のクイズを始める</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questions = []; // 現在のクイズの質問リスト
+        let currentQuizServiceData = []; // 選択されたクイズURLから読み込まれたデータ（gcp.json, aws.jsonなど）
+        let quizFilesMetadata = []; // jsons.jsonから読み込まれたクイズファイルのメタデータリスト
+        let typingInterval;
+
+        // Debug elements
+        const debugCurrentQuestion = document.getElementById('debug-current-question');
+        const debugTotalQuestions = document.getElementById('debug-total-questions');
+        const debugScore = document.getElementById('debug-score');
+        const debugLoadingStatus = document.getElementById('debug-loading-status');
+        const debugSelectedQuizUrl = document.getElementById('debug-selected-quiz-url');
+
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const resultArea = document.getElementById('result-area');
+        const nextButton = document.getElementById('next-button');
+        const restartButton = document.getElementById('restart-button');
+        const fileSelect = document.getElementById('file-select');
+        const startQuizButton = document.getElementById('start-quiz-button');
+        const quizArea = document.getElementById('quiz-area');
+        const fileSelectContainer = document.getElementById('file-select-container');
+
+        // Debug info update function
+        function updateDebugInfo() {
+            debugCurrentQuestion.textContent = currentQuestionIndex + 1;
+            debugTotalQuestions.textContent = questions.length;
+            debugScore.textContent = score;
+        }
+
+        // クイズファイルのメタデータを読み込む関数
+        async function loadQuizFilesMetadata() {
+            debugLoadingStatus.textContent = 'jsons.jsonを読み込み中...';
+            console.log('[DEBUG] jsons.jsonの読み込みを開始します...');
+            try {
+                const metadataUrl = './jsons.json'; 
+                const response = await fetch(metadataUrl);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`[ERROR] HTTP Error loading jsons.json: Status ${response.status}, Text: ${errorText}`);
+                    throw new Error(`HTTP error! status: ${response.status}. Check console for details.`);
+                }
+                quizFilesMetadata = await response.json();
+                console.log('[DEBUG] クイズファイルのメタデータを読み込みました:', quizFilesMetadata);
+                populateFileSelect(); // 読み込み後にドロップダウンを生成
+                debugLoadingStatus.textContent = 'メタデータ読み込み完了。クイズを選択してください。';
+            } catch (error) {
+                console.error('[ERROR] クイズファイルのメタデータの読み込みに失敗しました:', error);
+                alert('クイズファイルのリストの読み込みに失敗しました。\n開発者ツール(F12)のコンソールを確認してください。');
+                quizFilesMetadata = [];
+                populateFileSelect(); // 空の選択肢でドロップダウンを生成
+                debugLoadingStatus.textContent = 'メタデータ読み込み失敗。';
+            }
+        }
+
+        // ファイル選択のドロップダウンを動的に生成
+        function populateFileSelect() {
+            fileSelect.innerHTML = ''; // 既存のオプションをクリア
+            if (quizFilesMetadata.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'クイズが見つかりません';
+                fileSelect.appendChild(option);
+                startQuizButton.disabled = true; // クイズ開始ボタンを無効化
+                console.warn('[DEBUG] クイズメタデータが空のため、クイズ選択肢が生成できませんでした。');
+                return;
+            }
+
+            quizFilesMetadata.forEach(file => {
+                const option = document.createElement('option');
+                option.value = file.url; // URLをvalueに設定
+                option.textContent = file.name;
+                fileSelect.appendChild(option);
+            });
+            startQuizButton.disabled = false; // クイズ開始ボタンを有効化
+            console.log('[DEBUG] クイズ選択ドロップダウンを生成しました。');
+        }
+
+        // クイズ開始ボタンのイベントリスナー
+        startQuizButton.addEventListener('click', async () => {
+            const selectedFileUrl = fileSelect.value;
+            debugSelectedQuizUrl.textContent = selectedFileUrl;
+            console.log(`[DEBUG] 選択されたクイズURL: ${selectedFileUrl}`);
+
+            if (!selectedFileUrl) {
+                alert('クイズファイルが選択されていません。');
+                console.warn('[DEBUG] クイズファイルが選択されていないため、開始できません。');
+                return;
+            }
+            debugLoadingStatus.textContent = 'クイズデータ読み込み中...';
+            // 選択されたクイズURLから実際のクイズデータを読み込む
+            await loadCurrentQuizServiceData(selectedFileUrl);
+            if (currentQuizServiceData.length >= 4) { 
+                fileSelectContainer.classList.add('hidden');
+                quizArea.classList.remove('hidden');
+                initializeQuiz();
+                debugLoadingStatus.textContent = 'クイズ開始！';
+            } else {
+                alert('選択されたクイズデータの読み込みに失敗したか、クイズを生成するためのデータが不足しています（最低4つのデータが必要です）。\n開発者ツール(F12)のコンソールを確認してください。');
+                console.error('[ERROR] クイズ生成に必要なデータが不足しています。読み込んだデータ:', currentQuizServiceData);
+                debugLoadingStatus.textContent = 'クイズデータ不足または読み込み失敗。';
+            }
+        });
+
+        // 選択されたクイズURLから実際のサービスデータを読み込む関数
+        async function loadCurrentQuizServiceData(fileUrl) {
+            console.log(`[DEBUG] サービスデータを ${fileUrl} から読み込み中...`);
+            try {
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`[ERROR] HTTP Error loading quiz data from ${fileUrl}: Status ${response.status}, Text: ${errorText}`);
+                    throw new Error(`HTTP error! status: ${response.status}. Check console for details.`);
+                }
+                currentQuizServiceData = await response.json();
+                console.log(`[DEBUG] ${fileUrl} からクイズデータを読み込みました:`, currentQuizServiceData);
+            } catch (error) {
+                console.error(`[ERROR] クイズデータの読み込みに失敗しました (${fileUrl}):`, error);
+                currentQuizServiceData = []; 
+            }
+        }
+
+        function initializeQuiz() {
+            console.log('[DEBUG] クイズの初期化を開始します。');
+            // シャッフルしてクイズの問題を作成
+            questions = shuffleArray([...currentQuizServiceData]).map(item => {
+                const correctService = item.service;
+                // description_ja または info プロパティを優先して取得
+                const description = item.description_ja || item.info; 
+
+                if (!description || !correctService) { 
+                    console.warn(`[DEBUG] 問題生成スキップ: descriptionまたはserviceが不足しています。Item:`, item);
+                    return null;
+                }
+
+                // 正解以外のサービスから3つ選ぶ
+                const wrongOptionsPool = currentQuizServiceData.filter(s => 
+                    s.service !== correctService && (s.description_ja || s.info)
+                );
+                const shuffledWrongOptions = shuffleArray([...wrongOptionsPool]);
+                
+                let options = [];
+                options.push(correctService);
+
+                for (let i = 0; i < 3 && i < shuffledWrongOptions.length; i++) {
+                    if (!options.includes(shuffledWrongOptions[i].service)) {
+                        options.push(shuffledWrongOptions[i].service);
+                    } else {
+                        console.warn(`[DEBUG] 選択肢の重複を避けました: ${shuffledWrongOptions[i].service}`);
+                    }
+                }
+
+                if (options.length < 4) {
+                    console.warn(`[DEBUG] 選択肢が4つ未満のため、問題スキップ。サービス: ${correctService}, オプション数: ${options.length}`);
+                    return null; 
+                }
+                
+                return {
+                    question: `${description}。この説明に合致するサービスは何でしょう？`,
+                    correctAnswer: correctService,
+                    options: shuffleArray(options)
+                };
+            }).filter(q => q !== null && q.options.length === 4); 
+
+            currentQuestionIndex = 0;
+            score = 0;
+            console.log(`[DEBUG] ${questions.length} 個の問題を生成しました。`);
+            if (questions.length === 0) {
+                questionTextElement.textContent = "クイズを作成できませんでした。データの形式を確認するか、十分な数のデータ（最低4つ）があるか確認してください。";
+                optionsContainer.innerHTML = '';
+                nextButton.classList.add('hidden');
+                restartButton.classList.remove('hidden');
+                restartButton.textContent = '別のクイズを始める';
+                console.error('[ERROR] 有効なクイズ問題が1つも生成されませんでした。');
+                return;
+            }
+            displayQuestion();
+            nextButton.classList.add('hidden');
+            restartButton.classList.add('hidden');
+            resultArea.textContent = '';
+            updateDebugInfo();
+        }
+
+        function displayQuestion() {
+            const questionData = questions[currentQuestionIndex];
+            if (!questionData) {
+                console.warn('[DEBUG] 次の問題データが見つかりません。結果表示へ遷移します。');
+                showResults();
+                return;
+            }
+
+            console.log(`[DEBUG] 問題 ${currentQuestionIndex + 1} を表示中。正解: ${questionData.correctAnswer}`);
+            questionTextElement.textContent = ''; 
+            optionsContainer.innerHTML = ''; 
+            resultArea.textContent = ''; 
+            nextButton.classList.add('hidden'); 
+            updateDebugInfo();
+
+            typeWriter(questionData.question, () => {
+                questionData.options.forEach(option => {
+                    const button = document.createElement('button');
+                    const span = document.createElement('span'); 
+                    span.textContent = option;
+                    button.appendChild(span);
+                    button.onclick = () => checkAnswer(button, option, questionData.correctAnswer); 
+                    optionsContainer.appendChild(button);
+                    console.log(`[DEBUG] オプション追加: ${option}`);
+                });
+            });
+        }
+
+        function typeWriter(text, callback) {
+            let i = 0;
+            questionTextElement.classList.add('typing'); 
+            // 強制終了時の残骸を防ぐ
+            if (typingInterval) clearInterval(typingInterval); 
+            questionTextElement.textContent = ''; // Clear text before typing starts
+
+            typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    questionTextElement.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    questionTextElement.classList.remove('typing'); 
+                    if (callback) callback();
+                    console.log('[DEBUG] タイピング完了。');
+                }
+            }, 50); 
+        }
+
+        function checkAnswer(selectedButton, selectedOption, correctAnswer) {
+            clearInterval(typingInterval); 
+            questionTextElement.classList.remove('typing'); 
+            console.log(`[DEBUG] 回答チェック: 選択肢 "${selectedOption}", 正解 "${correctAnswer}"`);
+
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.disabled = true; 
+                const buttonText = button.querySelector('span').textContent;
+                
+                if (buttonText === correctAnswer) {
+                    button.classList.add('correct-selected'); 
+                    const mark = document.createElement('span');
+                    mark.classList.add('mark', 'check');
+                    mark.textContent = 'check_circle';
+                    button.appendChild(mark);
+                    console.log(`[DEBUG] 正解ボタンにマークを付けました: ${buttonText}`);
+                } else if (button === selectedButton) { // 選択されたボタンが不正解だった場合
+                    button.classList.add('incorrect-selected');
+                    const mark = document.createElement('span');
+                    mark.classList.add('mark', 'x-mark');
+                    mark.textContent = 'cancel';
+                    button.appendChild(mark);
+                    console.log(`[DEBUG] 不正解ボタンにマークを付けました: ${buttonText}`);
+                }
+            });
+
+            if (selectedOption === correctAnswer) {
+                resultArea.textContent = '正解！';
+                resultArea.classList.add('correct-text');
+                resultArea.classList.remove('incorrect-text');
+                score++;
+                console.log('[DEBUG] 回答: 正解！スコア:', score);
+            } else {
+                resultArea.textContent = `不正解...`; 
+                resultArea.classList.add('incorrect-text');
+                resultArea.classList.remove('correct-text');
+                console.log('[DEBUG] 回答: 不正解。');
+            }
+            nextButton.classList.remove('hidden');
+            updateDebugInfo();
+        }
+
+        function nextQuestion() {
+            console.log('[DEBUG] 次の問題へ...');
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            console.log('[DEBUG] クイズ終了。結果を表示します。');
+            questionTextElement.textContent = `クイズ終了！あなたのスコアは ${score} / ${questions.length} です！`;
+            optionsContainer.innerHTML = '';
+            resultArea.textContent = '';
+            nextButton.classList.add('hidden');
+            restartButton.classList.remove('hidden');
+            restartButton.textContent = '別のクイズを始める';
+            restartButton.onclick = () => {
+                console.log('[DEBUG] 別のクイズを始めるため、選択画面に戻ります。');
+                fileSelectContainer.classList.remove('hidden');
+                quizArea.classList.add('hidden');
+                restartButton.classList.add('hidden');
+                resultArea.textContent = '';
+                questionTextElement.textContent = '';
+                populateFileSelect(); // ファイル選択ドロップダウンを再生成
+                debugLoadingStatus.textContent = 'クイズを選択してください。';
+                debugSelectedQuizUrl.textContent = 'N/A';
+                updateDebugInfo(); // Reset debug info
+            };
+            updateDebugInfo();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // イベントリスナーの設定
+        nextButton.addEventListener('click', nextQuestion);
+
+        // 初期表示時にクイズエリアを非表示にし、jsons.jsonの読み込みを開始
+        document.addEventListener('DOMContentLoaded', () => {
+            quizArea.classList.add('hidden');
+            loadQuizFilesMetadata(); // jsons.jsonの読み込みを開始
+            updateDebugInfo(); // Initial debug info display
+        });
+    </script>
+</body>
+</html>

@@ -298,8 +298,9 @@
     <script>
         let currentQuestionIndex = 0;
         let score = 0;
-        let questions = [];
-        let serviceData = []; 
+        let questions = []; // 現在のクイズの質問リスト
+        let currentQuizServiceData = []; // 選択されたクイズURLから読み込まれたデータ（gcp.json, aws.jsonなど）
+        let quizFilesMetadata = []; // jsons.jsonから読み込まれたクイズファイルのメタデータリスト
         let typingInterval;
 
         const questionTextElement = document.getElementById('question-text');
@@ -312,32 +313,58 @@
         const quizArea = document.getElementById('quiz-area');
         const fileSelectContainer = document.getElementById('file-select-container');
 
-        // クイズファイルの定義（ユーザーが提供した例とGitHubのRaw URLを考慮）
-        // ご自身のGitHubリポジトリのRaw URLに置き換えてください
-        const quizFiles = [
-            { name: 'GCPサービス', url: 'https://raw.githubusercontent.com/bonsai/x2json/main/gcp.json' },
-            { name: 'AWSサービス', url: 'https://raw.githubusercontent.com/bonsai/x2json/main/aws.json' },
-            { name: 'さかなクイズ', url: 'https://raw.githubusercontent.com/bonsai/x2json/main/sakana.json' },
-            // 必要に応じて他のクイズファイルを追加
-            // { name: '新しいクイズ', url: 'https://raw.githubusercontent.com/your-username/your-repo/main/new_quiz.json' },
-        ];
+        // クイズファイルのメタデータを読み込む関数
+        async function loadQuizFilesMetadata() {
+            try {
+                // jsons.jsonのURLを直接指定します。
+                // GitHub Pagesの場合、リポジトリのルートにあるファイルは相対パスでアクセスできます。
+                // 例: https://raw.githubusercontent.com/bonsai/x2json/main/jsons.json
+                const metadataUrl = './jsons.json'; 
+                const response = await fetch(metadataUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                quizFilesMetadata = await response.json();
+                console.log('クイズファイルのメタデータを読み込みました:', quizFilesMetadata);
+                populateFileSelect(); // 読み込み後にドロップダウンを生成
+            } catch (error) {
+                console.error('クイズファイルのメタデータの読み込みに失敗しました:', error);
+                alert('クイズファイルのリストの読み込みに失敗しました。');
+                quizFilesMetadata = [];
+            }
+        }
 
         // ファイル選択のドロップダウンを動的に生成
         function populateFileSelect() {
             fileSelect.innerHTML = ''; // 既存のオプションをクリア
-            quizFiles.forEach(file => {
+            if (quizFilesMetadata.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'クイズが見つかりません';
+                fileSelect.appendChild(option);
+                startQuizButton.disabled = true; // クイズ開始ボタンを無効化
+                return;
+            }
+
+            quizFilesMetadata.forEach(file => {
                 const option = document.createElement('option');
                 option.value = file.url; // URLをvalueに設定
                 option.textContent = file.name;
                 fileSelect.appendChild(option);
             });
+            startQuizButton.disabled = false; // クイズ開始ボタンを有効化
         }
 
-        // ファイル選択とクイズ開始ボタンのイベントリスナー
+        // クイズ開始ボタンのイベントリスナー
         startQuizButton.addEventListener('click', async () => {
             const selectedFileUrl = fileSelect.value;
-            await loadQuizData(selectedFileUrl);
-            if (serviceData.length >= 4) { 
+            if (!selectedFileUrl) {
+                alert('クイズファイルが選択されていません。');
+                return;
+            }
+            // 選択されたクイズURLから実際のクイズデータを読み込む
+            await loadCurrentQuizServiceData(selectedFileUrl);
+            if (currentQuizServiceData.length >= 4) { 
                 fileSelectContainer.classList.add('hidden');
                 quizArea.classList.remove('hidden');
                 initializeQuiz();
@@ -346,22 +373,24 @@
             }
         });
 
-        async function loadQuizData(fileUrl) {
+        // 選択されたクイズURLから実際のサービスデータを読み込む関数
+        async function loadCurrentQuizServiceData(fileUrl) {
             try {
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                serviceData = await response.json();
-                console.log(`${fileUrl} を読み込みました:`, serviceData);
+                currentQuizServiceData = await response.json();
+                console.log(`${fileUrl} からクイズデータを読み込みました:`, currentQuizServiceData);
             } catch (error) {
-                console.error(`Error loading ${fileUrl}:`, error);
-                serviceData = []; 
+                console.error(`Error loading quiz data from ${fileUrl}:`, error);
+                currentQuizServiceData = []; 
             }
         }
 
         function initializeQuiz() {
-            questions = shuffleArray([...serviceData]).map(item => {
+            // シャッフルしてクイズの問題を作成
+            questions = shuffleArray([...currentQuizServiceData]).map(item => {
                 const correctService = item.service;
                 // description_ja または info プロパティを優先して取得
                 const description = item.description_ja || item.info; 
@@ -371,7 +400,7 @@
                 }
 
                 // 正解以外のサービスから3つ選ぶ
-                const wrongOptionsPool = serviceData.filter(s => 
+                const wrongOptionsPool = currentQuizServiceData.filter(s => 
                     s.service !== correctService && (s.description_ja || s.info)
                 );
                 const shuffledWrongOptions = shuffleArray([...wrongOptionsPool]);
@@ -464,14 +493,14 @@
                 const buttonText = button.querySelector('span').textContent;
                 
                 if (buttonText === correctAnswer) {
-                    // 正解のボタンには常にチェックマーク
-                    button.classList.add('correct-selected'); // 選択の有無に関わらず正解色に
+                    // 正解のボタンには常にチェックマークと正解色
+                    button.classList.add('correct-selected'); 
                     const mark = document.createElement('span');
                     mark.classList.add('mark', 'check');
                     mark.textContent = 'check_circle';
                     button.appendChild(mark);
                 } else if (button === selectedButton && selectedOption !== correctAnswer) {
-                    // 選択された不正解のボタンにはXマーク
+                    // 選択された不正解のボタンにはXマークと不正解色
                     button.classList.add('incorrect-selected');
                     const mark = document.createElement('span');
                     mark.classList.add('mark', 'x-mark');
@@ -522,7 +551,7 @@
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                [array[i], array[j]] = [array[i], array[j]];
             }
             return array;
         }
@@ -530,10 +559,10 @@
         // イベントリスナーの設定
         nextButton.addEventListener('click', nextQuestion);
 
-        // 初期表示時にクイズエリアを非表示にし、ファイル選択を生成
+        // 初期表示時にクイズエリアを非表示にし、jsons.jsonの読み込みを開始
         document.addEventListener('DOMContentLoaded', () => {
             quizArea.classList.add('hidden');
-            populateFileSelect(); // ページ読み込み時にドロップダウンを生成
+            loadQuizFilesMetadata(); // jsons.jsonの読み込みを開始
         });
     </script>
 </body>

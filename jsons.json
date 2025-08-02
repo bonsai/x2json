@@ -1,0 +1,14 @@
+[
+  {
+    "name": "GCPサービス",
+    "url": "https://raw.githubusercontent.com/bonsai/x2json/main/gcp.json"
+  },
+  {
+    "name": "AWSサービス",
+    "url": "https://raw.githubusercontent.com/bonsai/x2json/main/aws.json"
+  },
+  {
+    "name": "さかなクイズ",
+    "url": "https://raw.githubusercontent.com/bonsai/x2json/main/sakana.json"
+  }
+]

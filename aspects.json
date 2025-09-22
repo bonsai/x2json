@@ -1,0 +1,448 @@
+{
+  "smartphones": {
+    "iPhone": [
+      {
+        "device": "iPhone 3G",
+        "size_inch": 3.5,
+        "resolution": "320x480",
+        "name": "HVGA",
+        "ppi": 163
+      },
+      {
+        "device": "iPhone 3GS",
+        "size_inch": 3.5,
+        "resolution": "320x480",
+        "name": "HVGA",
+        "ppi": 163
+      },
+      {
+        "device": "iPhone 4",
+        "size_inch": 3.5,
+        "resolution": "640x960",
+        "name": "Retina",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 4S",
+        "size_inch": 3.5,
+        "resolution": "640x960",
+        "name": "Retina",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 5",
+        "size_inch": 4.0,
+        "resolution": "640x1136",
+        "name": "Retina",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 5S",
+        "size_inch": 4.0,
+        "resolution": "640x1136",
+        "name": "Retina",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone SE(第1世代)",
+        "size_inch": 4.0,
+        "resolution": "640x1136",
+        "name": "Retina",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 6",
+        "size_inch": 4.7,
+        "resolution": "750x1334",
+        "name": "RetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 6plus",
+        "size_inch": 5.5,
+        "resolution": "1080x1920",
+        "name": "FHD",
+        "ppi": 401
+      },
+      {
+        "device": "iPhone 6S",
+        "size_inch": 4.7,
+        "resolution": "750x1334",
+        "name": "RetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 6Splus",
+        "size_inch": 5.5,
+        "resolution": "1080x1920",
+        "name": "FHD",
+        "ppi": 401
+      },
+      {
+        "device": "iPhone 7",
+        "size_inch": 4.7,
+        "resolution": "750x1334",
+        "name": "RetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 7plus",
+        "size_inch": 5.5,
+        "resolution": "1080x1920",
+        "name": "FHD",
+        "ppi": 401
+      },
+      {
+        "device": "iPhone 8",
+        "size_inch": 4.7,
+        "resolution": "750x1334",
+        "name": "RetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 8plus",
+        "size_inch": 5.5,
+        "resolution": "1080x1920",
+        "name": "FHD",
+        "ppi": 401
+      },
+      {
+        "device": "iPhone X",
+        "size_inch": 5.8,
+        "resolution": "1125x2436",
+        "name": "SuperRetinaHD",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone XR",
+        "size_inch": 6.1,
+        "resolution": "828x1792",
+        "name": "LiquidRetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone XS",
+        "size_inch": 5.8,
+        "resolution": "1125x2436",
+        "name": "SuperRetinaHD",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone XS Max",
+        "size_inch": 6.5,
+        "resolution": "1242x2688",
+        "name": "SuperRetinaHD",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone 11",
+        "size_inch": 6.1,
+        "resolution": "828x1792",
+        "name": "LiquidRetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 11 Pro",
+        "size_inch": 5.8,
+        "resolution": "1125x2436",
+        "name": "SuperRetinaXDR",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone 11 Pro Max",
+        "size_inch": 6.5,
+        "resolution": "1242x2688",
+        "name": "SuperRetinaXDR",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone SE(第2世代)",
+        "size_inch": 4.7,
+        "resolution": "750x1334",
+        "name": "RetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 12 mini",
+        "size_inch": 5.4,
+        "resolution": "1080x2340",
+        "name": "SuperRetinaXDR",
+        "ppi": 476
+      },
+      {
+        "device": "iPhone 12",
+        "size_inch": 6.1,
+        "resolution": "1170x2532",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 12 Pro",
+        "size_inch": 6.1,
+        "resolution": "1170x2532",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 12 Pro Max",
+        "size_inch": 6.7,
+        "resolution": "1284x2778",
+        "name": "SuperRetinaXDR",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone 13 mini",
+        "size_inch": 5.4,
+        "resolution": "1080x2340",
+        "name": "SuperRetinaXDR",
+        "ppi": 476
+      },
+      {
+        "device": "iPhone 13",
+        "size_inch": 6.1,
+        "resolution": "1170x2532",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 13 Pro",
+        "size_inch": 6.1,
+        "resolution": "1170x2532",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 13 Pro Max",
+        "size_inch": 6.7,
+        "resolution": "1284x2778",
+        "name": "SuperRetinaXDR",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone SE(第3世代)",
+        "size_inch": 4.7,
+        "resolution": "750x1334",
+        "name": "RetinaHD",
+        "ppi": 326
+      },
+      {
+        "device": "iPhone 14",
+        "size_inch": 6.1,
+        "resolution": "1170x2532",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 14 Plus",
+        "size_inch": 6.7,
+        "resolution": "1284x2778",
+        "name": "SuperRetinaXDR",
+        "ppi": 458
+      },
+      {
+        "device": "iPhone 14 Pro",
+        "size_inch": 6.1,
+        "resolution": "1179x2556",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 14 Pro Max",
+        "size_inch": 6.7,
+        "resolution": "1290x2796",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 15",
+        "size_inch": 6.12,
+        "resolution": "1179x2556",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 15 Plus",
+        "size_inch": 6.69,
+        "resolution": "1290x2796",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 15 Pro",
+        "size_inch": 6.12,
+        "resolution": "1179x2556",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 15 Pro Max",
+        "size_inch": 6.69,
+        "resolution": "1290x2796",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 16",
+        "size_inch": 6.12,
+        "resolution": "1179x2556",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 16 Plus",
+        "size_inch": 6.69,
+        "resolution": "1290x2796",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 16 Pro",
+        "size_inch": 6.3,
+        "resolution": "1206x2622",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 16 Pro Max",
+        "size_inch": 6.9,
+        "resolution": "1320x2868",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 16e",
+        "size_inch": 6.1,
+        "resolution": "1170x2532",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 17",
+        "size_inch": 6.3,
+        "resolution": "1206x2622",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone Air",
+        "size_inch": 6.5,
+        "resolution": "1290x2736",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 17 Pro",
+        "size_inch": 6.3,
+        "resolution": "1206x2622",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      },
+      {
+        "device": "iPhone 17 Pro Max",
+        "size_inch": 6.9,
+        "resolution": "1320x2868",
+        "name": "SuperRetinaXDR",
+        "ppi": 460
+      }
+    ],
+    "Android_Pixel": [
+      {
+        "device": "Pixel XL",
+        "size_inch": 5.5,
+        "resolution": "1440x2560",
+        "name": "FHD",
+        "aspect_ratio": "9:16",
+        "ppi": 534
+      },
+      {
+        "device": "Pixel",
+        "size_inch": 5,
+        "resolution": "1080x1920",
+        "name": "FHD",
+        "aspect_ratio": "9:16",
+        "ppi": 441
+      },
+      {
+        "device": "Pixel 2 XL",
+        "size_inch": 6,
+        "resolution": "1440x2880",
+        "name": "FHD+",
+        "aspect_ratio": "9:18",
+        "ppi": 538
+      },
+      {
+        "device": "Pixel 2",
+        "size_inch": 5,
+        "resolution": "1080x1920",
+        "name": "FHD+",
+        "aspect_ratio": "9:16",
+        "ppi": 441
+      },
+      {
+        "device": "Google Pixel 3 XL",
+        "size_inch": 6.3,
+        "resolution": "1440x2960",
+        "name": null,
+        "aspect_ratio": "9:18.5",
+        "ppi": 522
+      },
+      {
+        "device": "Google Pixel 3",
+        "size_inch": 5.5,
+        "resolution": "1080x2160",
+        "name": "FHD+",
+        "aspect_ratio": "9:18",
+        "ppi": 443
+      },
+      {
+        "device": "Pixel 3a XL",
+        "size_inch": 6,
+        "resolution": "1080x2160",
+        "name": "FHD+",
+        "aspect_ratio": "9:18",
+        "ppi": 402
+      },
+      {
+        "device": "Pixel 3a",
+        "size_inch": 5.6,
+        "resolution": "1080x2220",
+        "name": "FHD+",
+        "aspect_ratio": "9:18.5",
+        "ppi": 441
+      },
+      {
+        "device": "Pixel 4",
+        "size_inch": 5.7,
+        "resolution": "1080x2280",
+        "name": "FHD+",
+        "aspect_ratio": "9:19",
+        "ppi": 444
+      },
+      {
+        "device": "Google Pixel 4 XL",
+        "size_inch": 6.3,
+        "resolution": "1440x3040",
+        "name": "QHD+",
+        "aspect_ratio": "9:19",
+        "ppi": 537
+      },
+      {
+        "device": "Google Pixel 4a",
+        "size_inch": 5.8,
+        "resolution": "1080x2340",
+        "name": "FHD+",
+        "aspect_ratio": "9:19.5",
+        "ppi": 443
+      },
+      {
+        "device": "Google Pixel 4a (5G)",
+        "size_inch": 6.2,
+        "resolution": "1080x2340",
+        "name": "FHD+",
+        "aspect_ratio": "9:19.5",
+        "ppi": 413
+      },
+      {
+        "device": "Google Pixel 5",
+        "size_inch": 6,
+        "resolution": "1080x2340",

@@ -1,0 +1,86 @@
+[
+    {
+        "name": "名刺",
+        "category": "紙製品",
+        "width": 91,
+        "height": 55
+    },
+    {
+        "name": "ハガキ",
+        "category": "紙製品",
+        "width": 148,
+        "height": 100
+    },
+    {
+        "name": "切手",
+        "category": "紙製品",
+        "width": 25,
+        "height": 30
+    },
+    {
+        "name": "A4紙",
+        "category": "紙製品",
+        "width": 210,
+        "height": 297
+    },
+    {
+        "name": "B5紙",
+        "category": "紙製品",
+        "width": 182,
+        "height": 257
+    },
+    {
+        "name": "新聞紙1ページ",
+        "category": "紙製品",
+        "width": 273,
+        "height": 406
+    },
+    {
+        "name": "ポストイット",
+        "category": "文房具",
+        "width": 76,
+        "height": 76
+    },
+    {
+        "name": "クレジットカード",
+        "category": "カード",
+        "width": 86,
+        "height": 54
+    },
+    {
+        "name": "CDジャケット",
+        "category": "音楽・映像メディア",
+        "width": 120,
+        "height": 120
+    },
+    {
+        "name": "Blu-rayケース",
+        "category": "音楽・映像メディア",
+        "width": 135,
+        "height": 170
+    },
+    {
+        "name": "シングルCD",
+        "category": "音楽・映像メディア",
+        "width": 126,
+        "height": 140
+    },
+    {
+        "name": "LPレコードジャケット",
+        "category": "音楽・映像メディア",
+        "width": 315,
+        "height": 315
+    },
+    {
+        "name": "EPレコードジャケット",
+        "category": "音楽・映像メディア",
+        "width": 180,
+        "height": 180
+    },
+    {
+        "name": "牛乳パック底",
+        "category": "日用品",
+        "width": 70,
+        "height": 70
+    }
+]

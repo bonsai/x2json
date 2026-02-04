@@ -1,0 +1,141 @@
+{
+  "party": "チームみらい",
+  "election": "第51回衆議院議員総選挙 (2026年)",
+  "candidates": [
+    {
+      "id": "MIRAI-2026-001",
+      "name": "稲原 むねよし",
+      "kana": "いなはら むねよし",
+      "block": "比例北海道ブロック",
+      "district": null,
+      "title": "エンジニア",
+      "roles": ["AIエンジニア"]
+    },
+    {
+      "id": "MIRAI-2026-002",
+      "name": "林 たくみ",
+      "kana": "はやし たくみ",
+      "block": "比例東北ブロック",
+      "district": null,
+      "title": "学校職員",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-003",
+      "name": "武藤 かず子",
+      "kana": "むとう かずこ",
+      "block": "比例北関東ブロック",
+      "district": null,
+      "title": "元コンサル会社員",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-004",
+      "name": "河合 みちお",
+      "kana": "かわい みちお",
+      "block": "比例南関東ブロック",
+      "district": null,
+      "title": "教育関係会社員",
+      "roles": ["党広報部"]
+    },
+    {
+      "id": "MIRAI-2026-005",
+      "name": "小林 しゅうへい",
+      "kana": "こばやし しゅうへい",
+      "block": "比例南関東ブロック",
+      "district": "千葉5区",
+      "title": "エンジニア",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-006",
+      "name": "山田 えり",
+      "kana": "やまだ えり",
+      "block": "比例南関東ブロック",
+      "district": null,
+      "title": "前川崎市議会議員",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-007",
+      "name": "うさみ 登",
+      "kana": "うさみ のぼる",
+      "block": "比例東京ブロック",
+      "district": "東京26区",
+      "title": "元衆議院議員",
+      "roles": ["経営コンサルタント"]
+    },
+    {
+      "id": "MIRAI-2026-008",
+      "name": "高山 さとし",
+      "kana": "たかやま さとし",
+      "block": "比例東京ブロック",
+      "district": null,
+      "title": "党幹事長",
+      "roles": ["党幹事長"]
+    },
+    {
+      "id": "MIRAI-2026-009",
+      "name": "土橋 あきひろ",
+      "kana": "どばし あきひろ",
+      "block": "比例東京ブロック",
+      "district": "東京2区",
+      "title": "脚本家・小説家",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-010",
+      "name": "みねしま 侑也",
+      "kana": "みねしま ゆうや",
+      "block": "比例東京ブロック",
+      "district": "東京7区",
+      "title": "元IT企業役員",
+      "roles": ["党政務調査会長"]
+    },
+    {
+      "id": "MIRAI-2026-011",
+      "name": "須田 えいたろう",
+      "kana": "すだ えいたろう",
+      "block": "比例東海ブロック",
+      "district": null,
+      "title": "党国会対策委員長",
+      "roles": ["党国会対策委員長"]
+    },
+    {
+      "id": "MIRAI-2026-012",
+      "name": "酒井 ゆうすけ",
+      "kana": "さかい ゆうすけ",
+      "block": "比例近畿ブロック",
+      "district": "京都2区",
+      "title": "ITコンサル",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-013",
+      "name": "堀場 さち子",
+      "kana": "ほりば さちこ",
+      "block": "比例近畿ブロック",
+      "district": "京都1区",
+      "title": "元衆議院議員",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-014",
+      "name": "山本 たけよし",
+      "kana": "やまもと たけよし",
+      "block": "比例近畿ブロック",
+      "district": null,
+      "title": "上場企業執行役員",
+      "roles": []
+    },
+    {
+      "id": "MIRAI-2026-015",
+      "name": "古川 あおい",
+      "kana": "ふるかわ あおい",
+      "block": "比例九州ブロック",
+      "district": null,
+      "title": "エンジニア",
+      "roles": ["元安野たかひろ公設秘書"]
+    }
+  ]
+}

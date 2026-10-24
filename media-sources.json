@@ -1,0 +1,123 @@
+{
+  "title": "オーディオ・音楽メディアリンク集",
+  "categories": [
+    {
+      "id": "magazines",
+      "name": "雑誌・専門誌",
+      "items": [
+        {
+          "name": "ステレオサウンド",
+          "url": "https://online.stereosound.co.jp/",
+          "selected": false
+        },
+        {
+          "name": "オーディオアクセサリー",
+          "url": "https://www.phileweb.com/",
+          "selected": false
+        },
+        {
+          "name": "stereo",
+          "url": "https://ontomo-shop.com/",
+          "selected": false
+        },
+        {
+          "name": "analog",
+          "url": "https://www.phileweb.com/",
+          "selected": false
+        },
+        {
+          "name": "MJ 無線と実験",
+          "url": "https://www.seibundo-shinkosha.net/",
+          "selected": false
+        },
+        {
+          "name": "HiVi",
+          "url": "https://online.stereosound.co.jp/",
+          "selected": false
+        },
+        {
+          "name": "CDジャーナル",
+          "url": "https://www.cdjournal.com/",
+          "selected": true
+        },
+        {
+          "name": "その他",
+          "url": null,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "id": "web_media",
+      "name": "Webメディア",
+      "items": [
+        {
+          "name": "Stereo Sound ONLINE",
+          "url": "https://online.stereosound.co.jp/",
+          "selected": false
+        },
+        {
+          "name": "Phile-web",
+          "url": "https://www.phileweb.com/",
+          "selected": false
+        },
+        {
+          "name": "ONTOMO",
+          "url": "https://ontomo-mag.com/",
+          "selected": false
+        },
+        {
+          "name": "CDJournal WEB",
+          "url": "https://www.cdjournal.com/",
+          "selected": false
+        },
+        {
+          "name": "AV Watch",
+          "url": "https://av.watch.impress.co.jp/",
+          "selected": false
+        },
+        {
+          "name": "価格.com",
+          "url": "https://kakaku.com/",
+          "selected": false
+        },
+        {
+          "name": "その他",
+          "url": null,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "id": "social_media",
+      "name": "SNS・動画",
+      "items": [
+        {
+          "name": "Facebook",
+          "url": "https://www.facebook.com/",
+          "selected": true
+        },
+        {
+          "name": "X",
+          "url": "https://x.com/",
+          "selected": false
+        },
+        {
+          "name": "Instagram",
+          "url": "https://www.instagram.com/",
+          "selected": false
+        },
+        {
+          "name": "YouTube",
+          "url": "https://www.youtube.com/",
+          "selected": false
+        },
+        {
+          "name": "その他",
+          "url": null,
+          "selected": false
+        }
+      ]
+    }
+  ]
+}

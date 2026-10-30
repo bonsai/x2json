@@ -1,0 +1,15 @@
+schema_version: "1.0"
+kind: "repository"
+id: "x2json"
+name: "x2json"
+description: "x2x と同一 README だけを持つ空リポジトリ（重複の疑い、実装なし）。"
+loadable: false
+status: "declared_no_SKILL_md"
+repository: "https://github.com/bonsai/x2json.git"
+languages: []
+entrypoints: []
+nested_skills: []
+files_excl_git: 1
+bytes_excl_git: 1969
+notes: "Lives under skills/ but has no SKILL.md, so opencode does not load it. Declared here for inventory; add SKILL.md to promote it."
+generated_by: "soubi/inventory"
